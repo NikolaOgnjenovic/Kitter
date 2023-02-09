@@ -1,13 +1,8 @@
-# Crypto APi
+# Kitter
 
-[![Build Status](https://travis-ci.org/codecentric/springboot-sample-app.svg?branch=master)](https://travis-ci.org/codecentric/springboot-sample-app)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
-Software which processes buy and sell orders for a cryptocurrency exchange marketplace.
-
-This software was made using [Spring Boot](http://projects.spring.io/spring-boot/) for the Levi9 hackathon challenge.
-
-It follows the REST architecture, contains tests and CRUD operations extracted from the `Challenge.pdf` file. 
+Spring boot twitter clone for posting kitties and connecting their owners for breeding purposes (and more?).
 
 ## Requirements
 
@@ -20,7 +15,7 @@ For building and running the software you need:
 
 There are several ways to run a Spring Boot application on your local machine.
 
-One way is to execute the `main` method in the `com.mrmi.cryptoapi.CryptoApiApplication` class from your IDE.
+One way is to execute the `main` method in the `com.mrmi.kitter.KitterApplication` class from your IDE.
 
 Alternatively you can use the [Spring Boot Maven plugin](https://docs.spring.io/spring-boot/docs/current/reference/html/build-tool-plugins-maven-plugin.html) like so:
 
