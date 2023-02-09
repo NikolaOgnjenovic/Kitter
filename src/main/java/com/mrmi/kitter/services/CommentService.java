@@ -2,26 +2,22 @@ package com.mrmi.kitter.services;
 
 import com.mrmi.kitter.exceptions.CommentException;
 import com.mrmi.kitter.objects.Comment;
+import com.mrmi.kitter.repositories.CommentRepository;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class CommentService {
+    private final CommentRepository commentRepository;
     private final PostService postService;
-    private List<Comment> commentList; // TODO: store in database
-    private static int id;
 
-    public CommentService(PostService postService) {
-        id = 0;
-        commentList = new ArrayList<>();
+    public CommentService(CommentRepository commentRepository, PostService postService) {
+        this.commentRepository = commentRepository;
         this.postService = postService;
     }
 
     public Comment uploadComment(int postId, Comment comment) {
         validateComment(postId, comment);
-        commentList.add(comment);
+        commentRepository.save(comment);
         return comment;
     }
 
@@ -30,32 +26,21 @@ public class CommentService {
             throw new CommentException("Comment message cannot be empty");
         }
 
-        postService.findPostById(postId);
+        postService.getPost(postId); // Throws an exception if the post doesn't exist
         comment.setPostId(postId);
-        comment.setId(id++);
-    }
-
-    private Comment findCommentById(int id) {
-        for (Comment p : commentList) {
-            if (p.getId() == id) {
-                return p;
-            }
-        }
-
-        throw new CommentException("Comment with id " + id + " not found.");
     }
 
     public Comment getComment(int id) {
-        return findCommentById(id);
+        return commentRepository.findById(id).orElseThrow(() -> new CommentException("Comment with id " + id + " not found."));
     }
 
-    public List<Comment> getCommentList() {
-        return commentList;
+    public Iterable<Comment> getCommentList() {
+        return commentRepository.findAll();
     }
 
     public Comment deleteComment(int id) {
-        Comment comment = findCommentById(id);
-        commentList.remove(comment);
+        Comment comment = getComment(id);
+        commentRepository.delete(comment);
         return comment;
     }
 }

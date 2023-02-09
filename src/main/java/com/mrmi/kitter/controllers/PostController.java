@@ -30,7 +30,7 @@ public class PostController {
 
     @GetMapping
     @ResponseStatus(value = HttpStatus.OK)
-    public List<Post> getPostList() {
+    public Iterable<Post> getPostList() {
         return postService.getPostList();
     }
 

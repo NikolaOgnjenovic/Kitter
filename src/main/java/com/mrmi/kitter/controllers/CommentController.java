@@ -5,8 +5,6 @@ import com.mrmi.kitter.services.CommentService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping(path = "/comments")
 public class CommentController {
@@ -16,9 +14,9 @@ public class CommentController {
         this.commentService = commentService;
     }
 
-    @PostMapping(path = "/{id}")
+    @PostMapping(path = "/{postId}")
     @ResponseStatus(value = HttpStatus.CREATED)
-    public Comment uploadComment(@PathVariable (name = "id") int postId, Comment comment) {
+    public Comment uploadComment(@PathVariable (name = "postId") int postId, Comment comment) {
         return commentService.uploadComment(postId, comment);
     }
 
@@ -30,7 +28,7 @@ public class CommentController {
 
     @GetMapping
     @ResponseStatus(value = HttpStatus.OK)
-    public List<Comment> getCommentList() {
+    public Iterable<Comment> getCommentList() {
         return commentService.getCommentList();
     }
 

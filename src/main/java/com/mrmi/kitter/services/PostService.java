@@ -2,25 +2,21 @@ package com.mrmi.kitter.services;
 
 import com.mrmi.kitter.exceptions.PostException;
 import com.mrmi.kitter.objects.Post;
+import com.mrmi.kitter.repositories.PostRepository;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class PostService {
 
-    private List<Post> postList; // TODO: store in database
-    private static int id;
+    private final PostRepository postRepository;
 
-    public PostService() {
-        id = 0;
-        postList = new ArrayList<>();
+    public PostService(PostRepository postRepository) {
+        this.postRepository = postRepository;
     }
 
     public Post uploadPost(Post post) {
         validatePost(post);
-        postList.add(post);
+        postRepository.save(post);
         return post;
     }
 
@@ -28,31 +24,19 @@ public class PostService {
         if (post.getMessage().isEmpty()) {
             throw new PostException("Post message cannot be empty");
         }
-
-        post.setId(id++);
-    }
-
-    public Post findPostById(int id) {
-        for (Post p : postList) {
-            if (p.getId() == id) {
-                return p;
-            }
-        }
-
-        throw new PostException("Post with id " + id + " not found.");
     }
 
     public Post getPost(int id) {
-        return findPostById(id);
+        return postRepository.findById(id).orElseThrow(() -> new PostException("Post with id " + id + " not found."));
     }
 
-    public List<Post> getPostList() {
-        return this.postList;
+    public Iterable<Post> getPostList() {
+        return postRepository.findAll();
     }
 
     public Post deletePost(int id) {
-        Post post = findPostById(id);
-        postList.remove(post);
+        Post post = getPost(id);
+        postRepository.delete(post);
         return post;
     }
 }
